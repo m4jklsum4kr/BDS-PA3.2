@@ -1,0 +1,29 @@
+image: 'maven:3.9.4-eclipse-temurin-17-alpine'
+
+cache:
+  paths:
+    - .m2/repository
+
+variables:
+  PROJECT_ARTIFACT_ID: bds-javafx-training
+  MAVEN_CLI_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+stages:
+  - build
+  - tests
+
+build:
+  stage: build
+  script:
+    - mvn clean install $MAVEN_CLI_OPTS -DskipTests
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: always
+
+tests:
+  stage: tests
+  script:
+    - mvn test $MAVEN_CLI_OPTS
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: always

@@ -17,7 +17,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="625.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.but.feec.javafx.controllers.PersonsController">
+<VBox minHeight="625.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.but.feec.javafx.controllers.LibController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -56,11 +56,11 @@
                 <TableView fx:id="systemPersonsTableView" layoutY="67.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                   <columns>
                     <TableColumn fx:id="personsId" minWidth="75.0" prefWidth="80.00000303983688" text="id" />
-                    <TableColumn fx:id="personsEmail" minWidth="75.0" prefWidth="160.00001525878906" text="email" />
+                    <TableColumn fx:id="personsEmail" minWidth="75.0" prefWidth="160.00001525878906" text="title" />
                     <TableColumn fx:id="personsGivenName" minWidth="75.0" prefWidth="120.0" text="given name" />
                     <TableColumn fx:id="personsFamilyName" minWidth="75.0" prefWidth="120.0" text="family name" />
-                    <TableColumn fx:id="personsCity" minWidth="75.0" prefWidth="120.0" text="city" />
-                    <TableColumn fx:id="personsNickname" minWidth="75.0" prefWidth="120.0" text="nickname" />
+                    <TableColumn fx:id="personsCity" minWidth="75.0" prefWidth="120.0" text="isbn" />
+                    <TableColumn fx:id="personsNickname" minWidth="75.0" prefWidth="120.0" text="publisher" />
                   </columns>
                 </TableView>
                 <Button fx:id="addPersonButton" layoutX="24.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleAddPersonButton" text="Add person" />

@@ -1,7 +1,7 @@
 package org.but.feec.javafx.controllers;
 
 import org.but.feec.javafx.App;
-import org.but.feec.javafx.data.PersonRepository;
+import org.but.feec.javafx.data.LibRepository;
 import org.but.feec.javafx.exceptions.DataAccessException;
 import org.but.feec.javafx.exceptions.ExceptionHandler;
 import org.but.feec.javafx.exceptions.ResourceNotFoundException;
@@ -46,7 +46,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordTextField;
 
-    private PersonRepository personRepository;
+    private LibRepository libRepository;
     private AuthService authService;
 
     private ValidationSupport validation;
@@ -85,8 +85,8 @@ public class LoginController {
     }
 
     private void initializeServices() {
-        personRepository = new PersonRepository();
-        authService = new AuthService(personRepository);
+        libRepository = new LibRepository();
+        authService = new AuthService(libRepository);
     }
 
     private void initializeLogos() {

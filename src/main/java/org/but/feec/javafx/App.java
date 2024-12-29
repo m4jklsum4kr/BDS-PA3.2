@@ -23,7 +23,7 @@ public class App extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("App.fxml"));
             VBox mainStage = loader.load();
 
-            primaryStage.setTitle("BDS JavaFX Demo");
+            primaryStage.setTitle("Library App :3");
             Scene scene = new Scene(mainStage);
             setUserAgentStylesheet(STYLESHEET_MODENA);
             String myStyle = getClass().getResource("css/myStyle.css").toExternalForm();

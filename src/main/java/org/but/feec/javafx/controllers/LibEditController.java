@@ -11,10 +11,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.but.feec.javafx.api.PersonBasicView;
-import org.but.feec.javafx.api.PersonEditView;
-import org.but.feec.javafx.data.PersonRepository;
-import org.but.feec.javafx.services.PersonService;
+import org.but.feec.javafx.api.LibEditView;
+import org.but.feec.javafx.data.LibRepository;
+import org.but.feec.javafx.api.LibBasicView;
+import org.but.feec.javafx.services.LibService;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 import org.slf4j.Logger;
@@ -23,25 +23,25 @@ import org.slf4j.LoggerFactory;
 import java.util.Optional;
 
 
-public class PersonsEditController {
+public class LibEditController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PersonsEditController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LibEditController.class);
 
     @FXML
     public Button editPersonButton;
     @FXML
     public TextField idTextField;
     @FXML
-    private TextField emailTextField;
+    private TextField isbnTextField;
     @FXML
-    private TextField givenNameTextField;
+    private TextField titleTextField;
     @FXML
-    private TextField familyNameTextField;
+    private TextField author_nameTextField;
     @FXML
-    private TextField nicknameTextField;
+    private TextField genreTextField;
 
-    private PersonService personService;
-    private PersonRepository personRepository;
+    private LibService libService;
+    private LibRepository libRepository;
     private ValidationSupport validation;
 
     // used to reference the stage and to get passed data through it
@@ -53,16 +53,16 @@ public class PersonsEditController {
 
     @FXML
     public void initialize() {
-        personRepository = new PersonRepository();
-        personService = new PersonService(personRepository);
+        libRepository = new LibRepository();
+        libService = new LibService(libRepository);
 
         validation = new ValidationSupport();
         validation.registerValidator(idTextField, Validator.createEmptyValidator("The id must not be empty."));
         idTextField.setEditable(false);
-        validation.registerValidator(emailTextField, Validator.createEmptyValidator("The email must not be empty."));
-        validation.registerValidator(givenNameTextField, Validator.createEmptyValidator("The first name must not be empty."));
-        validation.registerValidator(familyNameTextField, Validator.createEmptyValidator("The last name must not be empty."));
-        validation.registerValidator(nicknameTextField, Validator.createEmptyValidator("The nickname must not be empty."));
+        validation.registerValidator(isbnTextField, Validator.createEmptyValidator("The isbn must not be empty."));
+        validation.registerValidator(titleTextField, Validator.createEmptyValidator("The title must not be empty."));
+        validation.registerValidator(author_nameTextField, Validator.createEmptyValidator("The author name must not be empty."));
+        validation.registerValidator(genreTextField, Validator.createEmptyValidator("The genre must not be empty."));
 
         editPersonButton.disableProperty().bind(validation.invalidProperty());
 
@@ -76,13 +76,13 @@ public class PersonsEditController {
      */
     private void loadPersonsData() {
         Stage stage = this.stage;
-        if (stage.getUserData() instanceof PersonBasicView) {
-            PersonBasicView personBasicView = (PersonBasicView) stage.getUserData();
-            idTextField.setText(String.valueOf(personBasicView.getId()));
-            emailTextField.setText(personBasicView.getEmail());
-            givenNameTextField.setText(personBasicView.getGivenName());
-            familyNameTextField.setText(personBasicView.getFamilyName());
-            nicknameTextField.setText(personBasicView.getNickname());
+        if (stage.getUserData() instanceof LibBasicView) {
+            LibBasicView libBasicView = (LibBasicView) stage.getUserData();
+            idTextField.setText(String.valueOf(libBasicView.getId()));
+            isbnTextField.setText(String.valueOf(libBasicView.getIsbn()));
+            titleTextField.setText(libBasicView.getTitle());
+            author_nameTextField.setText(libBasicView.getAuthor_name());
+            genreTextField.setText(libBasicView.getGenre());
         }
     }
 
@@ -90,27 +90,27 @@ public class PersonsEditController {
     public void handleEditPersonButton(ActionEvent event) {
         // can be written easier, its just for better explanation here on so many lines
         Long id = Long.valueOf(idTextField.getText());
-        String email = emailTextField.getText();
-        String firstName = givenNameTextField.getText();
-        String lastName = familyNameTextField.getText();
-        String nickname = nicknameTextField.getText();
+        Long isbn = Long.valueOf(isbnTextField.getText());
+        String title = titleTextField.getText();
+        String author_name = author_nameTextField.getText();
+        String publisher = genreTextField.getText();
 
-        PersonEditView personEditView = new PersonEditView();
-        personEditView.setId(id);
-        personEditView.setEmail(email);
-        personEditView.setGivenName(firstName);
-        personEditView.setFamilyName(lastName);
-        personEditView.setNickname(nickname);
+        LibEditView libEditView = new LibEditView();
+        libEditView.setId(id);
+        libEditView.setIsbn(isbn);
+        libEditView.setTitle(title);
+        libEditView.setAuthor_name(author_name);
+        libEditView.setPublisher(publisher);
 
-        personService.editPerson(personEditView);
+        libService.editPerson(libEditView);
 
         personEditedConfirmationDialog();
     }
 
     private void personEditedConfirmationDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Person Edited Confirmation");
-        alert.setHeaderText("Your person was successfully edited.");
+        alert.setTitle("Book Edited Confirmation");
+        alert.setHeaderText("Your book was successfully edited.");
 
         Timeline idlestage = new Timeline(new KeyFrame(Duration.seconds(3), new EventHandler<ActionEvent>() {
             @Override

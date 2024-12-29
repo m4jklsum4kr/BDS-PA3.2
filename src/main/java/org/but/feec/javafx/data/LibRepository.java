@@ -8,9 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonRepository {
+public class LibRepository {
 
-    public PersonAuthView findPersonByEmail(String email) {
+    public LibAuthView findPersonByEmail(String email) {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT email, pwd" +
@@ -23,12 +23,12 @@ public class PersonRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Find person by ID with addresses failed.", e);
+            throw new DataAccessException("Find person by email with addresses failed.", e);
         }
         return null;
     }
 
-    public PersonDetailView findPersonDetailedView(Long personId) {
+    public LibDetailView findPersonDetailedView(Long personId) {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT id_person, email, given_name, family_name, nickname, city, house_number, street" +
@@ -47,127 +47,132 @@ public class PersonRepository {
         return null;
     }
 
+    public void removeBook(Long id) {
+        String deleteBookSQL =  "DELETE FROM library.book WHERE book_id = ?";
+        System.out.println(deleteBookSQL);
+        try (Connection connection = DataSourceConfig.getConnection();
+             PreparedStatement prpstmt = connection.prepareStatement(deleteBookSQL)){
+
+            prpstmt.setLong(1, id);
+            prpstmt.executeUpdate();
+
+        }
+        catch (SQLException e) {
+            System.out.println("failed");
+        }
+
+    }
     /**
      * What will happen if we do not use LEFT JOIN? What persons will be returned? Ask your self and repeat JOIN from the presentations
      *
      * @return list of persons
      */
-    public List<PersonBasicView> getPersonsBasicView() {
+    public List<LibBasicView> getPersonsBasicView() {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT id_person, email, given_name, family_name, nickname, city" +
                              " FROM bds.person p" +
                              " LEFT JOIN bds.address a ON p.id_address = a.id_address");
-             ResultSet resultSet = preparedStatement.executeQuery();) {
-            List<PersonBasicView> personBasicViews = new ArrayList<>();
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            List<LibBasicView> libBasicViews = new ArrayList<>();
             while (resultSet.next()) {
-                personBasicViews.add(mapToPersonBasicView(resultSet));
+                libBasicViews.add(mapToPersonBasicView(resultSet));
             }
-            return personBasicViews;
+            return libBasicViews;
         } catch (SQLException e) {
             throw new DataAccessException("Persons basic view could not be loaded.", e);
         }
     }
 
-    public void createPerson(PersonCreateView personCreateView) {
+    public void createPerson(LibCreateView libCreateView) {
         String insertPersonSQL = "INSERT INTO bds.person (email, given_name, nickname, pwd, family_name) VALUES (?,?,?,?,?)";
         try (Connection connection = DataSourceConfig.getConnection();
              // would be beneficial if I will return the created entity back
              PreparedStatement preparedStatement = connection.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS)) {
             // set prepared statement variables
-            preparedStatement.setString(1, personCreateView.getEmail());
-            preparedStatement.setString(2, personCreateView.getGivenName());
-            preparedStatement.setString(3, personCreateView.getNickname());
-            preparedStatement.setString(4, String.valueOf(personCreateView.getPwd()));
-            preparedStatement.setString(5, personCreateView.getFamilyName());
+            preparedStatement.setLong(1, libCreateView.getIsbn());
+            preparedStatement.setString(2, libCreateView.getTitle());
+            preparedStatement.setString(3, libCreateView.getAuthor_name());
+            preparedStatement.setString(4, String.valueOf(libCreateView.getGenre()));
+            preparedStatement.setString(5, libCreateView.getPublisher());
 
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new DataAccessException("Creating person failed, no rows affected.");
+                throw new DataAccessException("Creating book failed, no rows affected.");
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Creating person failed operation on the database failed.");
+            throw new DataAccessException("Creating book failed operation on the database failed.");
         }
     }
 
-    public void editPerson(PersonEditView personEditView) {
+    public void editPerson(LibEditView libEditView) {
         String insertPersonSQL = "UPDATE bds.person p SET email = ?, given_name = ?, nickname = ?, family_name = ? WHERE p.id_person = ?";
         String checkIfExists = "SELECT email FROM bds.person p WHERE p.id_person = ?";
         try (Connection connection = DataSourceConfig.getConnection();
              // would be beneficial if I will return the created entity back
              PreparedStatement preparedStatement = connection.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS)) {
             // set prepared statement variables
-            preparedStatement.setString(1, personEditView.getEmail());
-            preparedStatement.setString(2, personEditView.getGivenName());
-            preparedStatement.setString(3, personEditView.getNickname());
-            preparedStatement.setString(4, personEditView.getFamilyName());
-            preparedStatement.setLong(5, personEditView.getId());
+            preparedStatement.setLong(1, libEditView.getIsbn());
+            preparedStatement.setString(2, libEditView.getTitle());
+            preparedStatement.setString(3, libEditView.getAuthor_name());
+            preparedStatement.setString(4, libEditView.getPublisher());
+            preparedStatement.setLong(5, libEditView.getId());
 
             try {
-                // TODO set connection autocommit to false
-                /* HERE */
+
                 try (PreparedStatement ps = connection.prepareStatement(checkIfExists, Statement.RETURN_GENERATED_KEYS)) {
-                    ps.setLong(1, personEditView.getId());
+                    ps.setLong(1, libEditView.getId());
                     ps.execute();
                 } catch (SQLException e) {
-                    throw new DataAccessException("This person for edit do not exists.");
+                    throw new DataAccessException("This book for edit do not exists.");
                 }
 
                 int affectedRows = preparedStatement.executeUpdate();
 
                 if (affectedRows == 0) {
-                    throw new DataAccessException("Creating person failed, no rows affected.");
+                    throw new DataAccessException("Creating book failed, no rows affected.");
                 }
-                // TODO commit the transaction (both queries were performed)
-                /* HERE */
+                System.out.println(connection);
+                connection.commit();
             } catch (SQLException e) {
-                // TODO rollback the transaction if something wrong occurs
-                /* HERE */
+                connection.rollback();
             } finally {
-                // TODO set connection autocommit back to true
-                /* HERE */
+                connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Creating person failed operation on the database failed.");
+            throw new DataAccessException("Creating book failed operation on the database failed.");
         }
     }
 
 
-    /**
-     * <p>
-     * Note: In practice reflection or other mapping frameworks can be used (e.g., MapStruct)
-     * </p>
-     */
-    private PersonAuthView mapToPersonAuth(ResultSet rs) throws SQLException {
-        PersonAuthView person = new PersonAuthView();
+    private LibAuthView mapToPersonAuth(ResultSet rs) throws SQLException {
+        LibAuthView person = new LibAuthView();
         person.setEmail(rs.getString("email"));
         person.setPassword(rs.getString("pwd"));
         return person;
     }
 
-    private PersonBasicView mapToPersonBasicView(ResultSet rs) throws SQLException {
-        PersonBasicView personBasicView = new PersonBasicView();
-        personBasicView.setId(rs.getLong("id_person"));
-        personBasicView.setEmail(rs.getString("email"));
-        personBasicView.setGivenName(rs.getString("given_name"));
-        personBasicView.setFamilyName(rs.getString("family_name"));
-        personBasicView.setNickname(rs.getString("nickname"));
-        personBasicView.setCity(rs.getString("city"));
-        return personBasicView;
+    private LibBasicView mapToPersonBasicView(ResultSet rs) throws SQLException {
+        LibBasicView libBasicView = new LibBasicView();
+        libBasicView.setId(rs.getLong("id_person"));
+        libBasicView.setIsbn(rs.getLong("isbn"));
+        libBasicView.setTitle(rs.getString("title"));
+        libBasicView.setAuthor_name(rs.getString("Author name"));
+        libBasicView.setPublisher(rs.getString("publisher"));
+        return libBasicView;
     }
 
-    private PersonDetailView mapToPersonDetailView(ResultSet rs) throws SQLException {
-        PersonDetailView personDetailView = new PersonDetailView();
-        personDetailView.setId(rs.getLong("id_person"));
-        personDetailView.setEmail(rs.getString("email"));
-        personDetailView.setGivenName(rs.getString("given_name"));
-        personDetailView.setFamilyName(rs.getString("family_name"));
-        personDetailView.setNickname(rs.getString("nickname"));
-        personDetailView.setCity(rs.getString("city"));
-        personDetailView.sethouseNumber(rs.getString("house_number"));
-        personDetailView.setStreet(rs.getString("street"));
-        return personDetailView;
+    private LibDetailView mapToPersonDetailView(ResultSet rs) throws SQLException {
+        LibDetailView libDetailView = new LibDetailView();
+        libDetailView.setId(rs.getLong("id_person"));
+        libDetailView.setIsbn(rs.getLong("isbn"));
+        libDetailView.setTitle(rs.getString("Title"));
+        libDetailView.setAuthor_name(rs.getString("Author name"));
+        libDetailView.setGenre(rs.getString("genre"));
+        libDetailView.setPublisher(rs.getString("Publisher"));
+        libDetailView.setPublication_date(rs.getString("Publication date"));
+        return libDetailView;
     }
 
 }

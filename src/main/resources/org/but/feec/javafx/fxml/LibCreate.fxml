@@ -25,22 +25,22 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="title">
+            <Label text="isbn">
                <padding>
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Label text="first name" GridPane.rowIndex="1">
+            <Label text="title" GridPane.rowIndex="1">
                <padding>
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Label text="last name" GridPane.rowIndex="2">
+            <Label text="author Name" GridPane.rowIndex="2">
                <padding>
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Label text="pwd" GridPane.rowIndex="3">
+            <Label text="genre" GridPane.rowIndex="3">
                <padding>
                   <Insets left="5.0" />
                </padding>
@@ -50,11 +50,11 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="newPersonIsbn" promptText="type new person title" GridPane.columnIndex="1" />
-            <TextField fx:id="newPersonTitle" promptText="type new person first name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="newPersonPublisher" promptText="type new person last name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="newPersonGenre" promptText="type new person password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="newPersonAuthorName" promptText="type new person publisher" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="newPersonIsbn" promptText="type new book title" GridPane.columnIndex="1" />
+            <TextField fx:id="newPersonTitle" promptText="type new book title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="newPersonPublisher" promptText="type book publisher" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="newPersonGenre" promptText="type new book genre" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="newPersonAuthorName" promptText="type new person author name" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <Button fx:id="newPersonCreatePerson" layoutX="501.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleCreateNewPerson" text="create" />

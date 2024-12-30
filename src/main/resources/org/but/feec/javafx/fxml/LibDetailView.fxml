@@ -32,22 +32,22 @@
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="title" GridPane.rowIndex="1">
+                <Label text="isbn" GridPane.rowIndex="1">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="first name" GridPane.rowIndex="2">
+                <Label text="title" GridPane.rowIndex="2">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="last name" GridPane.rowIndex="3">
+                <Label text="author name" GridPane.rowIndex="3">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="publisher" GridPane.rowIndex="4">
+                <Label text="genre" GridPane.rowIndex="4">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
@@ -56,7 +56,7 @@
                 <TextField fx:id="isbnTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="titleTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="author_nameNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField fx:id="nicknameTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField fx:id="genreTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label text="isbn" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets />
@@ -65,7 +65,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Label text="house number" GridPane.rowIndex="6">
+            <Label text="title" GridPane.rowIndex="6">
                <padding>
                   <Insets left="5.0" />
                </padding>
@@ -75,9 +75,9 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="cityTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="houseNumberTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="streetTextField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="author name" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="genre" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="publisher" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             </children>
         </GridPane>
     </children>

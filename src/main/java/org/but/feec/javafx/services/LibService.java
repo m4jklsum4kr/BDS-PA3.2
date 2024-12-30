@@ -1,9 +1,6 @@
 package org.but.feec.javafx.services;
 
-import org.but.feec.javafx.api.LibBasicView;
-import org.but.feec.javafx.api.LibCreateView;
-import org.but.feec.javafx.api.LibEditView;
-import org.but.feec.javafx.api.LibDetailView;
+import org.but.feec.javafx.api.*;
 import org.but.feec.javafx.data.LibRepository;
 
 import java.util.List;
@@ -29,6 +26,9 @@ public class LibService {
         return libRepository.getPersonsBasicView();
     }
 
+    public List<InjectionView> getInjectionView(String input) {
+        return libRepository.getInjectionView(input);
+    }
     public void createPerson(LibCreateView libCreateView) {
         // the following three lines can be written in one code line (only for more clear explanation it is written in three lines
        /* char[] originalPassword = libCreateView.getPwd();

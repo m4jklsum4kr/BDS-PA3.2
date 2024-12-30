@@ -56,36 +56,19 @@
                 <TableView fx:id="systemPersonsTableView" layoutY="67.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                   <columns>
                     <TableColumn fx:id="personsId" minWidth="75.0" prefWidth="80.00000303983688" text="id" />
-                    <TableColumn fx:id="personsEmail" minWidth="75.0" prefWidth="160.00001525878906" text="title" />
-                    <TableColumn fx:id="personsGivenName" minWidth="75.0" prefWidth="120.0" text="given name" />
-                    <TableColumn fx:id="personsFamilyName" minWidth="75.0" prefWidth="120.0" text="family name" />
-                    <TableColumn fx:id="personsCity" minWidth="75.0" prefWidth="120.0" text="isbn" />
-                    <TableColumn fx:id="personsNickname" minWidth="75.0" prefWidth="120.0" text="publisher" />
+                    <TableColumn fx:id="isbn" minWidth="75.0" prefWidth="160.00001525878906" text="isbn" />
+                    <TableColumn fx:id="title" minWidth="75.0" prefWidth="120.0" text="title" />
+                    <TableColumn fx:id="author_name" minWidth="75.0" prefWidth="120.0" text="author name" />
+                    <TableColumn fx:id="genre" minWidth="75.0" prefWidth="120.0" text="genre" />
+                    <TableColumn fx:id="publisher" minWidth="75.0" prefWidth="120.0" text="publisher" />
                   </columns>
                 </TableView>
-                <Button fx:id="addPersonButton" layoutX="24.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleAddPersonButton" text="Add person" />
+                <Button fx:id="addPersonButton" layoutX="24.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleAddPersonButton" text="Add entry" />
                 <Button fx:id="refreshButton" layoutX="127.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleRefreshButton" text="Refresh" />
               </children>
             </AnchorPane>
           </content>
         </ScrollPane>
-        <AnchorPane>
-          <children>
-            <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="My meetings" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-            <TableView fx:id="systemMeetingTableView" layoutX="14.0" layoutY="67.0" prefHeight="399.0" prefWidth="395.0">
-              <columns>
-                <TableColumn fx:id="meetingId" prefWidth="28.0" text="id" />
-                <TableColumn fx:id="meetingNote" prefWidth="85.0" text="note" />
-                <TableColumn fx:id="meetingPlace" prefWidth="95.0" text="place" />
-                <TableColumn fx:id="meetingStart" prefWidth="90.0" text="start" />
-                <TableColumn fx:id="meetingEnd" prefWidth="90.0" text="end" />
-              </columns>
-              <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-              </columnResizePolicy>
-            </TableView>
-          </children>
-        </AnchorPane>
       </items>
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">

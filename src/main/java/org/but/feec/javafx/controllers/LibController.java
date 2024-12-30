@@ -78,13 +78,13 @@ public class LibController {
     }
 
     private void initializeTableViewSelection() {
-        MenuItem edit = new MenuItem("Edit person");
-        MenuItem detailedView = new MenuItem("Detailed person view");
+        MenuItem edit = new MenuItem("Edit Book");
+        MenuItem detailedView = new MenuItem("Detailed Book view");
         edit.setOnAction((ActionEvent event) -> {
             LibBasicView personView = systemPersonsTableView.getSelectionModel().getSelectedItem();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(App.class.getResource("fxml/PersonEdit.fxml"));
+                fxmlLoader.setLocation(App.class.getResource("fxml/LibEdit.fxml"));
                 Stage stage = new Stage();
                 stage.setUserData(personView);
                 stage.setTitle("BDS Library Edit Book");
@@ -107,7 +107,7 @@ public class LibController {
             LibBasicView personView = systemPersonsTableView.getSelectionModel().getSelectedItem();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(App.class.getResource("fxml/PersonsDetailView.fxml"));
+                fxmlLoader.setLocation(App.class.getResource("fxml/LibDetailView.fxml"));
                 Stage stage = new Stage();
 
                 Long personId = personView.getId();

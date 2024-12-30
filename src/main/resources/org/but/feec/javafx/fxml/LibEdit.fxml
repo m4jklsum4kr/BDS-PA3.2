@@ -29,17 +29,17 @@
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="title" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="isbn" GridPane.rowIndex="1" GridPane.columnIndex="0">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="first name" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Label text="title" GridPane.rowIndex="2" GridPane.columnIndex="0">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label text="last name" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                <Label text="author_name" GridPane.rowIndex="3" GridPane.columnIndex="0">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
@@ -50,9 +50,9 @@
                     </padding>
                 </Label>
                 <TextField fx:id="idTextField" GridPane.columnIndex="1" />
-                <TextField fx:id="titleTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="givenNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="lastNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField fx:id="isbnTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="titleTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="authorNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                 <TextField fx:id="publisherTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>

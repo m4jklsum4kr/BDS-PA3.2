@@ -13,8 +13,8 @@ public class LibRepository {
     public LibAuthView findPersonByEmail(String email) {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT email, pwd" +
-                             " FROM bds.person p" +
+                     "SELECT email, password" +
+                             " FROM bookstore.users p" +
                              " WHERE p.email = ?")) {
             preparedStatement.setString(1, email);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -31,10 +31,10 @@ public class LibRepository {
     public LibDetailView findPersonDetailedView(Long personId) {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT id_person, email, given_name, family_name, nickname, city, house_number, street" +
-                             " FROM bds.person p" +
-                             " LEFT JOIN bds.address a ON p.id_address = a.id_address" +
-                             " WHERE p.id_person = ?")) {
+                     "SELECT u.*, up.profile_data" +
+                             " FROM bookstore.users u" +
+                             " LEFT JOIN bookstore.user_profile up ON u.user_id = up.user_id" +
+                             " WHERE u.id_person = ?")) {
             preparedStatement.setLong(1, personId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -47,8 +47,10 @@ public class LibRepository {
         return null;
     }
 
+    //TODO: no usages najit kde to vazne
+
     public void removeBook(Long id) {
-        String deleteBookSQL =  "DELETE FROM library.book WHERE book_id = ?";
+        String deleteBookSQL =  "DELETE FROM bookstore.books WHERE book_id = ?";
         System.out.println(deleteBookSQL);
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement prpstmt = connection.prepareStatement(deleteBookSQL)){
@@ -70,9 +72,9 @@ public class LibRepository {
     public List<LibBasicView> getPersonsBasicView() {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT id_person, email, given_name, family_name, nickname, city" +
-                             " FROM bds.person p" +
-                             " LEFT JOIN bds.address a ON p.id_address = a.id_address");
+                     "SELECT book_id, title, author_name, publication_date " +
+                             " FROM bookstore.books p" +
+                             " LEFT JOIN bookstore.book_authors a ON p.book_id = a.book_id");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             List<LibBasicView> libBasicViews = new ArrayList<>();
             while (resultSet.next()) {
@@ -84,8 +86,35 @@ public class LibRepository {
         }
     }
 
+    public List<InjectionView> getInjectionView(String input){
+        String query = "SELECT user_id,username,first_name,last_name  from bookstore.users u where u.user_id =" + input ;
+        // 1; DROP TABLE injection.user;--
+        // 1 OR 1=1
+        try (Connection connection = DataSourceConfig.getConnection();
+             Statement statement = connection.createStatement();
+
+             ResultSet resultSet = statement.executeQuery(query)) {
+            List<InjectionView> injectionViews = new ArrayList<>();
+            System.out.println(statement);
+            while (resultSet.next()) {
+
+                injectionViews.add(mapToInjectionView(resultSet));
+            }
+            return injectionViews;
+        } catch (SQLException e) {
+            throw new DataAccessException("Find all users SQL failed.", e);
+        }
+
+
+    }
+
+    // proc to je tady sakra šedý
+
     public void createPerson(LibCreateView libCreateView) {
-        String insertPersonSQL = "INSERT INTO bds.person (email, given_name, nickname, pwd, family_name) VALUES (?,?,?,?,?)";
+        String insertPersonSQL = "INSERT INTO bookstore.books(isbn, title, author_name, genre, publisher) VALUES (?,?,?,?,?)";
+        String insertAuthorSQL = "INSERT INTO bookstore.book_authors(book_id, author_id) VALUES (?,?)";
+        String insertConnectionSQL = "Insert into bookstore.book_author(book_book_id, author_author_id) values ((SELECT book_id FROM bookstore.books WHERE book_isbn = ?)," +
+                " (SELECT author_id FROM bookstore.authors WHERE author_name = ?))";
         try (Connection connection = DataSourceConfig.getConnection();
              // would be beneficial if I will return the created entity back
              PreparedStatement preparedStatement = connection.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -107,8 +136,13 @@ public class LibRepository {
     }
 
     public void editPerson(LibEditView libEditView) {
-        String insertPersonSQL = "UPDATE bds.person p SET email = ?, given_name = ?, nickname = ?, family_name = ? WHERE p.id_person = ?";
-        String checkIfExists = "SELECT email FROM bds.person p WHERE p.id_person = ?";
+        String insertPersonSQL =
+                "begin;" +
+                "UPDATE bookstore.books b SET isbn = ?, title = ?, author_name = ?, publisher = ? WHERE b.book.id = ?" +
+                "UPDATE bookstore.authors a SET author_name = ? WHERE a.author_id = (SELECT ba.author.id FROM bookstore.book_authors ba WHERE ba.book_id = ?) ";
+
+        String checkIfExists = "SELECT isbn FROM bookstore.books b WHERE b.book_id = ?";
+
         try (Connection connection = DataSourceConfig.getConnection();
              // would be beneficial if I will return the created entity back
              PreparedStatement preparedStatement = connection.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -173,6 +207,14 @@ public class LibRepository {
         libDetailView.setPublisher(rs.getString("Publisher"));
         libDetailView.setPublication_date(rs.getString("Publication date"));
         return libDetailView;
+    }
+    private InjectionView mapToInjectionView(ResultSet rs ) throws  SQLException{
+        InjectionView injectionView = new InjectionView();
+        injectionView.setId(rs.getLong("id"));
+        injectionView.setUsername(rs.getString("username"));
+        injectionView.setFirst_name(rs.getString("First name"));
+        injectionView.setLast_name(rs.getString("Last_name"));
+        return injectionView;
     }
 
 }

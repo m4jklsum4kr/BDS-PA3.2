@@ -9,19 +9,14 @@ $ mvn clean install
 
 Run the project:
 ```shell
-$ java -jar target/bds-javafx-training-1.0.0.jar
-```
-
-Run the project with externalized `application.properties`:
-```shell
-$ java -jar target/bds-javafx-training-1.0.0.jar "./etc/application.properties"
+$ java -jar target/my-app-1.0.0.jar
 ```
 
 The `application.properties` file can be located in any place on the system that the application can access.
 
 Sign-in with the following credentials:
-- Username: `radek.kruta@seznam.cz`
-- Password: `batman`
+- Username: ``
+- Password: ``
 
 ## To generate the project and external libraries licenses
 Enter the following command in the project root directory

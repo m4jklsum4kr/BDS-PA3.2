@@ -15,8 +15,8 @@ $ java -jar target/my-app-1.0.0.jar
 The `application.properties` file can be located in any place on the system that the application can access.
 
 Sign-in with the following credentials:
-- Username: ``
-- Password: ``
+- Username: `johndoe@email.com`
+- Password: `postgres`
 
 ## To generate the project and external libraries licenses
 Enter the following command in the project root directory

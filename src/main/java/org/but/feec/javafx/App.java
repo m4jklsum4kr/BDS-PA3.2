@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 import javax.xml.crypto.Data;
 
-//TODO:tady to je nejaky divny
 
 public class App extends Application {
 
